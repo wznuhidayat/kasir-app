@@ -1,6 +1,5 @@
 <script setup>
 import { RouterView } from 'vue-router';
-import HelloWorld from './components/HelloWorld.vue'
 import Login from '@/views/Login.vue'
 </script>
 
@@ -14,8 +13,7 @@ import Login from '@/views/Login.vue'
   </p> -->
   <!-- route outlet -->
   <!-- component matched by the route will render here -->
-  <router-view></router-view>
-  <!-- <HelloWorld msg="Vite + Vue" /> -->
+  <component :is="$route.meta.layout" />
 </template>
 
 <style scoped>
