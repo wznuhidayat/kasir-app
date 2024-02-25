@@ -2,10 +2,12 @@
 
 import axios from "axios";
 import { defineStore } from "pinia";
-
+// axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+axios.defaults.withCredentials = true;
 export const useUserStore = defineStore("user", {
   state: () => ({
     user: null,
+    authenticated: false
   }),
   getters: {
     loggedInUser: (state) => state.user
@@ -14,14 +16,32 @@ export const useUserStore = defineStore("user", {
     async getToken(){
       await axios.get('http://localhost:8989/sanctum/csrf-cookie',{
         withCredentials: true, // Add this line
-      })
-    },
-    async getUser(){
-      this.getToken();
-      const data = await axios.get('http://localhost:8989/api/user',{
-        withCredentials: true, // Add this line
       });
-      this.user = data.data;
+    },  
+    async getUser(){
+    //   const csrfToken = await this.getToken();
+    //   console.log('token:' +csrfToken);
+    //   const data = await axios.get('http://localhost:8989/api/user', {
+    //         withCredentials: true, // Add this line if necessary for cross-origin requests
+    //         headers: {
+    //             'Authorization': `Bearer ${yourToken}`, // Replace yourToken with the actual token value
+    //         }
+    // });
+    //   this.user = data.data;
+      try {
+        await axios
+          .get('http://localhost:2000/user')
+          .then((res) => {
+            console.log(res);
+            this.user = res.data.user;
+            // user.value = res.data.map((item) => item.name).toString()
+          })
+          .catch((err) => {
+            console.log(err.response.data.message)
+          })
+      } catch (error) {
+        console.log(error)
+      }
     },
     async signIn(data) {
       
@@ -35,16 +55,61 @@ export const useUserStore = defineStore("user", {
       
       this.router.push('/dashboard');
     },
+    setAuthentication(status){
+      this.authenticated = status;
+    },
+    async doLogin(data){
+      await axios.post('http://localhost:2000/login', data, {
+        headers: { 'Content-Type': 'application/json' }
+      })
+      .then((res) => {
+        this.setAuthentication(true)
+        console.log(res.data)
+        this.router.push('/dashboard');
+      })
+      .catch((err) => {
+        console.log(err.response.data.message)
+      })
+    },
+    async logout(){
+      try {
+        axios
+          .delete('http://localhost:2000/logout')
+          .then((res) => {
+            this.setAuthentication(false)
+            this.router.push('/login');
+          })
+          .catch((err) => {
+            console.log(err.response.data.message)
+          })
+      } catch (error) {
+        console.log(error)
+      }
+    },
     async signOut() {
-      const csrfToken = await this.getToken(); // Obtain a new CSRF token before signing out
-      const user = await axios.post("http://localhost:8989/api/logout", null, {
-        headers: {
-          "X-XSRF-TOKEN": csrfToken, // Replace 'csrfToken' with the actual token value
-        },
-        withCredentials: true,
-      });
-      this.user = null;
-      this.router.push('/login');
+      
+      try {
+        // Obtain a new CSRF token before signing out
+        const csrfToken = await  this.getToken();
+    
+        // Make the logout request
+        await axios.post("http://localhost:8989/api/logout", null,
+             {
+              headers: {
+                'X-CSRF-TOKEN': csrfToken,
+            },
+          withCredentials: true, // Include credentials in the request
+        });
+    
+        // Clear user data or perform other necessary actions
+        this.user = null;
+    
+        // Redirect to the login page
+        this.router.push('/login');
+      } catch (error) {
+        console.error("Error during logout:", error);
+        // Handle errors as needed
+      }
     },
   },
 });

@@ -1,4 +1,4 @@
-<template>
+  <template>
     <Sidebar>
       <template #content>
         <main class="container mx-auto px-4 py-4">

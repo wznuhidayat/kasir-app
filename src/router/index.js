@@ -3,6 +3,7 @@ import Login from "@/views/Login.vue";
 import Register from "@/views/Register.vue";
 import Home from "@/views/Home.vue";
 import Dashboard from "@/views/Dashboard.vue";
+import Category from "@/views/category/Index.vue";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 import AuthLayout from "@/layouts/AuthLayout.vue";
 // import VueRouter from 'vue-router'
@@ -30,6 +31,41 @@ const routes = [
   {
     path: "/dashboard",
     component: Dashboard,
+    meta: {
+      // requireAuth: true,
+      layout: AdminLayout,
+    },
+  },
+  {
+    path: "/category",
+    component: Category,
+    meta: {
+      // requireAuth: true,
+      layout: AdminLayout,
+    },
+  },
+  {
+    path: "/category/create",
+    name: 'category.create',
+    component: import('../views/category/Create.vue'),
+    meta: {
+      // requireAuth: true,
+      layout: AdminLayout,
+    },
+  },
+  {
+    path: "/products",
+    name: 'products',
+    component: import('../views/products/Index.vue'),
+    meta: {
+      // requireAuth: true,
+      layout: AdminLayout,
+    },
+  },
+  {
+    path: "/products/create",
+    name: 'products.create',
+    component: import('../views/products/Create.vue'),
     meta: {
       // requireAuth: true,
       layout: AdminLayout,

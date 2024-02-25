@@ -7,9 +7,12 @@ export default {
   theme: {
     extend: {},
   },
+  daisyui: {
+    themes: ["light"],
+  },
   server: {
     proxy: {
-      '/api': 'http://localhost:8989', // Sesuaikan dengan URL Laravel Anda
+      '/api': 'http://localhost:2000', // Sesuaikan dengan URL Laravel Anda
     },
   },
   plugins: [require("daisyui")],
