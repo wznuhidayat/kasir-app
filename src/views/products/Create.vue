@@ -5,7 +5,10 @@
         </div>
         <form @submit.prevent="submitForm">
         <div class="card-body">
-           
+                <div class="label">
+                    <span class="label-text">Image</span>
+                </div>
+                <input type="file" id="image" @change="handleFileUpload($event)"  class="file-input file-input-bordered w-full max-w-xs" />
             <div class="label">
                     <span class="label-text">Code</span>
                 </div>
@@ -17,11 +20,16 @@
                 <div class="label">
                     <span class="label-text">Category</span>
                 </div>
+               
                 <select class="select select-bordered w-full max-w-xs" v-model="form.category_id">
                     
                 <option disabled selected>Selcect Category</option>
                 <option v-for="(category, index) in categoryStore.categories" :value="category.id"    >{{ category.name }}</option>
                 </select>
+                <div class="label">
+                    <span class="label-text">Price</span>
+                </div>
+                <input type="text" placeholder="Rp. xxx"  v-model="form.price" class="input input-bordered w-full max-w-xs" />
         </div>
         <div class="card-footer">
             <div class="flex justify-between ">
@@ -47,6 +55,8 @@ const form = reactive({
         code: "",
         name: "",
         category_id: "",
+        image: null,
+        price: "",
       });
       
 onMounted(async () => {
@@ -56,5 +66,7 @@ onMounted(async () => {
     function submitForm() {
         return productStore.storeProduct(form);
     }
-    
+    const handleFileUpload = (e) => {
+        form.image = e.target.files[0]
+    }
 </script>
