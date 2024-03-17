@@ -6,6 +6,7 @@ import Dashboard from "@/views/Dashboard.vue";
 import Category from "@/views/category/Index.vue";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 import AuthLayout from "@/layouts/AuthLayout.vue";
+import { useUserStore } from "../store/auth";
 // import VueRouter from 'vue-router'
 
 // Vue.use(VueRouter);
@@ -14,6 +15,7 @@ const routes = [
   {
     path: "/",
     component: Home,
+    
     meta: {
       // requireAuth: true,
       layout: AuthLayout,
@@ -21,7 +23,9 @@ const routes = [
   },
   {
     path: "/Login",
+    name: 'login',
     component: Login,
+    beforeEnter: preventAuthPage,
     meta: {
       // requireAuth: true,
       layout: AuthLayout,
@@ -30,7 +34,9 @@ const routes = [
   { path: "/register", component: Register },
   {
     path: "/dashboard",
+    name: "dashboard",
     component: Dashboard,
+    beforeEnter: requireAuth,
     meta: {
       // requireAuth: true,
       layout: AdminLayout,
@@ -39,6 +45,7 @@ const routes = [
   {
     path: "/category",
     component: Category,
+    beforeEnter: requireAuth,
     meta: {
       // requireAuth: true,
       layout: AdminLayout,
@@ -47,6 +54,7 @@ const routes = [
   {
     path: "/category/create",
     name: 'category.create',
+    beforeEnter: requireAuth,
     component: import('../views/category/Create.vue'),
     meta: {
       // requireAuth: true,
@@ -56,6 +64,7 @@ const routes = [
   {
     path: "/products",
     name: 'products',
+    beforeEnter: requireAuth,
     component: import('../views/products/Index.vue'),
     meta: {
       // requireAuth: true,
@@ -65,6 +74,7 @@ const routes = [
   {
     path: "/products/create",
     name: 'products.create',
+    beforeEnter: requireAuth,
     component: import('../views/products/Create.vue'),
     meta: {
       // requireAuth: true,
@@ -82,7 +92,18 @@ const router = new createRouter({
 //   mode: 'history',
 //   routes,
 // });
-
+function requireAuth(to, from, next) {
+  const authStore = useUserStore();
+  console.log(authStore.authenticated);
+  if (authStore.authenticated == true) next(  )
+  else next({ name: 'login' })
+}
+function preventAuthPage(to, from, next) {
+  const authStore = useUserStore();
+  console.log(authStore.authenticated);
+  if (authStore.authenticated == false) next()
+  else next({ name: 'dashboard' })
+}
 // router.beforeEach(async (to) => {
 //   // redirect to login page if not logged in and trying to access a restricted page
 //   const publicPages = ['/login'];

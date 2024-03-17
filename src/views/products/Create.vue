@@ -3,6 +3,7 @@
         <div class="card-header">
             <h2 class="text-left font-bold text-black">Form Category</h2>
         </div>
+        <Toast :message="productStore.alertRef.message" :statusAlert="productStore.alertRef.status"  :typeAlert="productStore.alertRef.type"/>
         <form @submit.prevent="submitForm">
         <div class="card-body">
                 <div class="label">
@@ -48,6 +49,7 @@ import { useUserStore } from "@/store/auth";
 import { useCategories } from '@/store/categories';
 import { useProducts } from '@/store/products';
 import { reactive } from 'vue';
+import Toast from '@/components/Toast.vue';
 const authStore = useUserStore();
 const categoryStore = useCategories();
 const productStore = useProducts();

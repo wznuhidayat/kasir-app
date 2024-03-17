@@ -19,20 +19,10 @@ export const useUserStore = defineStore("user", {
       });
     },  
     async getUser(){
-    //   const csrfToken = await this.getToken();
-    //   console.log('token:' +csrfToken);
-    //   const data = await axios.get('http://localhost:8989/api/user', {
-    //         withCredentials: true, // Add this line if necessary for cross-origin requests
-    //         headers: {
-    //             'Authorization': `Bearer ${yourToken}`, // Replace yourToken with the actual token value
-    //         }
-    // });
-    //   this.user = data.data;
       try {
         await axios
           .get('http://localhost:2000/user')
           .then((res) => {
-            console.log(res);
             this.user = res.data.user;
             // user.value = res.data.map((item) => item.name).toString()
           })
@@ -64,7 +54,6 @@ export const useUserStore = defineStore("user", {
       })
       .then((res) => {
         this.setAuthentication(true)
-        console.log(res.data)
         this.router.push('/dashboard');
       })
       .catch((err) => {

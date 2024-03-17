@@ -15,24 +15,21 @@ export const useProducts = defineStore("products", {
         this.products = data.data.products;
       },
       async storeProduct(data) {
-        console.log({
-          code : data.code,
-          name: data.name,
-          category_id: data.category_id,
-          image: data.image,
-          price: parseInt(data.price)
-      });
-        const response = await axios.post("http://localhost:2000/products",{
-            code : data.code,
-            name: data.name,
-            category_id: data.category_id,
-            image: data.image,
-            price: parseInt(data.price)
-        },{
-          headers: { 'Content-Type': 'multipart/form-data' }
-        });
-        this.setMessage(true, response.data.message, 'success');
-        this.router.push('/products');
+        try {
+          const response = await axios.post("http://localhost:2000/products",{
+              code : data.code,
+              name: data.name,
+              category_id: data.category_id,
+              image: data.image,
+              price: parseInt(data.price)
+          },{
+            headers: { 'Content-Type': 'multipart/form-data' }
+          });
+          this.setMessage(true, response.data.message, 'success');
+          this.router.push('/products');
+        } catch (error) {
+          this.setMessage(true, 'a system error occurred', 'error');
+        }
       },
       async deleteProduct(id){
         Swal.fire({

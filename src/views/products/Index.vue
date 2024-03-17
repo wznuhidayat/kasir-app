@@ -11,9 +11,10 @@
             <div class="overflow-x-auto">
                 <table class="table">
                     <!-- head -->
-                    <thead class=" text-slate-50 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 py-36">
+                    <thead>
                         <tr>
                             <th>No</th>
+                            <th>Img</th>
                             <th>Code</th>
                             <th>Name</th>
                             <th>Category</th>
@@ -25,6 +26,7 @@
                         <tr v-for="(product, index) in productStore.products" :key="index">
                             
                             <th>{{ index+1 }}</th>
+                            <img :src="fetchImage(product.image)" />
                             <td>{{ product.code }}</td>
                             <td>{{ product.name }}</td>
                             <td>{{ product.category.name }}</td>
@@ -44,6 +46,7 @@
 import { onMounted } from 'vue';
 import { useUserStore } from "@/store/auth";
 import { useProducts } from "@/store/products";
+import axios from "axios";
 import Alert from '@/components/Alert.vue'
 const authStore = useUserStore();
 const productStore = useProducts();
@@ -53,4 +56,13 @@ onMounted(async () => {
     await productStore.getProducts();
 })
 
+function fetchImage(filename) {
+    axios.get('http://localhost:2000/public/images/products/'+filename) // Ganti dengan nama file gambar yang ingin Anda tampilkan
+    .then(response => {
+        this.imageURL = response.config.url;
+    })
+    .catch(error => {
+        console.error('Error fetching image: ', error);
+    });
+}
 </script>
