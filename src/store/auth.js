@@ -9,6 +9,7 @@ export const useUserStore = defineStore("user", {
     user: null,
     authenticated: false
   }),
+  persist: true,
   getters: {
     loggedInUser: (state) => state.user
   },
