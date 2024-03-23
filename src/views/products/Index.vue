@@ -26,7 +26,11 @@
                         <tr v-for="(product, index) in productStore.products" :key="index">
                             
                             <th>{{ index+1 }}</th>
-                            <img :src="fetchImage(product.image)" />
+                            <th><div class="avatar">
+  <div class="w-14 rounded">
+    <img :src="`${baseUrl}${product.image}`" />
+  </div>
+</div></th>
                             <td>{{ product.code }}</td>
                             <td>{{ product.name }}</td>
                             <td>{{ product.category.name }}</td>
@@ -50,14 +54,14 @@ import axios from "axios";
 import Alert from '@/components/Alert.vue'
 const authStore = useUserStore();
 const productStore = useProducts();
-
+const baseUrl = "http://localhost:2000/images/products/";
 
 onMounted(async () => {
     await productStore.getProducts();
 })
 
 function fetchImage(filename) {
-    axios.get('http://localhost:2000/public/images/products/'+filename) // Ganti dengan nama file gambar yang ingin Anda tampilkan
+    axios.get('http://localhost:2000/images/products/'+filename) // Ganti dengan nama file gambar yang ingin Anda tampilkan
     .then(response => {
         this.imageURL = response.config.url;
     })
