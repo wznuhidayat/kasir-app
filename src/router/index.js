@@ -4,6 +4,7 @@ import Register from "@/views/Register.vue";
 import Home from "@/views/Home.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Category from "@/views/category/Index.vue";
+import Pos from "@/views/pos/Index.vue";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 import AuthLayout from "@/layouts/AuthLayout.vue";
 import { useUserStore } from "../store/auth";
@@ -36,6 +37,15 @@ const routes = [
     path: "/dashboard",
     name: "dashboard",
     component: Dashboard,
+    beforeEnter: requireAuth,
+    meta: {
+      // requireAuth: true,
+      layout: AdminLayout,
+    },
+  },
+  {
+    path: "/pos",
+    component: Pos,
     beforeEnter: requireAuth,
     meta: {
       // requireAuth: true,

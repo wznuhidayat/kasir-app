@@ -8,13 +8,13 @@ export default {
     extend: {},
   },
   daisyui: {
-    themes: ["light"],
+    themes: ["bumblebee",],
   },
   server: {
     proxy: {
       '/api': 'http://localhost:2000', // Sesuaikan dengan URL Laravel Anda
     },
   },
-  plugins: [require("daisyui")],
+  plugins: [require("daisyui"),require('tailwind-scrollbar')({ nocompatible: true })],
 }
 

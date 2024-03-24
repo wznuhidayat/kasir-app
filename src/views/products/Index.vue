@@ -1,11 +1,11 @@
 <template>
-    <div class="card text-primary bg-base-100">
+    <div class="card text-neutral bg-base-100">
         <div class="card-header">
             <h2 class="text-left font-bold text-black">Products</h2>
         </div>
         <div class="card-body">
             <div class="flex flex-row mb-2">
-                <router-link  to="/products/create" class="btn btn-primary text-white">Add Product</router-link>
+                <router-link  to="/products/create" class="btn btn-primary ">Add Product</router-link>
             </div>
             <Alert class="mb-2" :message="productStore.alertRef.message" :statusAlert="productStore.alertRef.status"  :typeAlert="productStore.alertRef.type"/>
             <div class="overflow-x-auto">

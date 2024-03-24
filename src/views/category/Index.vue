@@ -1,17 +1,17 @@
 <template>
-    <div class="card text-primary bg-base-100">
+    <div class="card text-neutral bg-base-100">
         <div class="card-header">
             <h2 class="text-left font-bold text-black">Category</h2>
         </div>
         <div class="card-body">
             <div class="flex flex-row mb-2">
-                <router-link  to="/category/create" class="btn btn-primary text-white">Add Category</router-link>
+                <router-link  to="/category/create" class="btn btn-primary ">Add Category</router-link>
             </div>
             <Alert class="mb-2" :message="categoryStore.alertRef.message" :statusAlert="categoryStore.alertRef.status"  :typeAlert="categoryStore.alertRef.type"/>
             <div class="overflow-x-auto">
                 <table class="table">
                     <!-- head -->
-                    <thead class=" text-slate-50 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400 py-36">
+                    <thead >
                         <tr>
                             <th>No</th>
                             <th>Code</th>
