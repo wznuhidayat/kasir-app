@@ -11,13 +11,15 @@
           <label class="label">
             <span class="label-text">Email</span>
           </label>
-          <input type="text" placeholder="email" v-model="form.email" class="input input-bordered rounded-none text-secondary" />
+          <input type="text" placeholder="email" v-model="form.email" :class="userStore.errors.email == '' ? 'input input-bordered text-secondary': 'input input-bordered input-error text-secondary'" />
+          <div class="label" v-if="userStore.errors.email"><span class="label-text-alt text-error">{{ userStore.errors.email }}</span> </div>
         </div>
         <div class="form-control">
           <label class="label">
             <span class="label-text">Password</span>
           </label>
-          <input type="password" placeholder="password" v-model="form.password" class="input input-bordered rounded-none text-secondary" />
+          <input type="password" placeholder="password" v-model="form.password" :class="userStore.errors.password == '' ? 'input input-bordered text-secondary': 'input input-bordered input-error text-secondary'"  />
+          <div class="label" v-if="userStore.errors.password"><span class="label-text-alt text-error">{{ userStore.errors.password }}</span> </div>
           <label class="label">
             <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
           </label>
@@ -26,46 +28,37 @@
           <button class="btn btn-primary rounded-none">Login</button>
         </div>
         </form>
+        
       </div>
   </div>
 </div>
   
 </template>
   
-  <script>
-  import { ref } from 'vue';
+  <script setup>
+  import { reactive,onMounted } from 'vue';
   import { useUserStore } from "@/store/auth";
   import  axios  from 'axios';
   
   axios.default.withCredentials = true;
-
-      
-  export default {
-    setup() {
-      const form = ref({
+  const userStore = useUserStore();
+  const form = reactive({
         email: "",
         password: "",
       });
-      const userStore = useUserStore();
-      return { userStore, form };
-    },
-    
-    methods: {
-      async login() {
+  
+onMounted(() => {
+  userStore.clearValidation(); // <div>
+})
+  // console.log(userStore.errors.email != '');
+
+  async function login() {
         // return await this.userStore.signIn(this.form);
-        return await this.userStore.doLogin(this.form);
+        const data = await userStore.doLogin(form);
+        return data;
 
-        // await axios.get('http://localhost:8989/sanctum/csrf-cookie')
-        //   const user = await axios.post("http://localhost:8989/api/login",{
-        //     email : this.form.email,
-        //     password: this.form.password
-        // });
-
-        // console.log(user);
-      },
-    },
-  };
-
+      }
+     
   </script>
   
   <style scoped>

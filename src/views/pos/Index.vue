@@ -3,22 +3,14 @@
         <div class="w-2/3 text-natural px-4">
             <div class="card bg-base-100" style="padding: 0.5rem;">
                 <div class="flex px-0">
-                        <button class="btn btn-active btn-accent mr-2 px-8">Hot</button>
-                        <button class="btn btn-active btn-ghost mr-2 px-8">Food</button>
-                        <button class="btn btn-active btn-ghost mr-2 px-8">Drink</button>
-                    </div>
+                    
+                    <button class="btn btn-active btn-ghost mr-2 px-8" v-for="(category, index) in categoryStore.categories" :key="index">{{ category.name }}</button>
+
+                </div>
             </div>
             <div class="grid grid-cols-4 gap-4 overflow-auto scrollbar-thin h-32 overflow-y-scroll" style="padding-top: 1.5rem;height: 630px;">
-                <CardProduct></CardProduct>
-                <CardProduct></CardProduct>
-                <CardProduct></CardProduct>
-                <CardProduct></CardProduct>
-                <CardProduct></CardProduct>
-                <CardProduct></CardProduct>
-                <CardProduct></CardProduct>
-                <CardProduct></CardProduct>
-                <CardProduct></CardProduct>
-                <CardProduct></CardProduct>
+                <CardProduct v-for="(product, index) in productStore.products" :key="index" :product="product"></CardProduct>
+               
                 
             </div>
         </div>
@@ -108,4 +100,14 @@
 </template>
 <script setup>
 import CardProduct from '@/components/CardProduct.vue'
+import { onMounted } from 'vue';
+import { useCategories } from "@/store/categories";
+import { useProducts } from "@/store/products"
+const categoryStore = useCategories();
+const productStore = useProducts();
+
+onMounted(async () => {
+    await categoryStore.getCategories();
+    await productStore.getProducts();
+})
 </script>

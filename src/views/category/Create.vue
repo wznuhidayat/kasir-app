@@ -9,11 +9,13 @@
             <div class="label">
                     <span class="label-text">Code</span>
                 </div>
-                <input type="text" placeholder="Code Category" v-model="form.code" class="input input-bordered w-full max-w-xs" />
+                <input type="text" placeholder="Code Category" v-model="form.code" :class="categoryStore.errors.code == '' ? 'input input-bordered w-full max-w-xs' : 'input input-bordered input-error w-full max-w-xs'" />
+                <div class="label" v-if="categoryStore.errors.code"><span class="label-text-alt text-error">{{ categoryStore.errors.code }}</span> </div>
                 <div class="label">
                     <span class="label-text">Name</span>
                 </div>
-                <input type="text" placeholder="Name Category"  v-model="form.name" class="input input-bordered w-full max-w-xs" />
+                <input type="text" placeholder="Name Category"  v-model="form.name" :class="categoryStore.errors.name == '' ? 'input input-bordered w-full max-w-xs' : 'input input-bordered input-error w-full max-w-xs'" />
+                <div class="label" v-if="categoryStore.errors.name"><span class="label-text-alt text-error">{{ categoryStore.errors.name }}</span> </div>
             
         </div>
         <div class="card-footer">

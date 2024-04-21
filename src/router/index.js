@@ -104,13 +104,11 @@ const router = new createRouter({
 // });
 function requireAuth(to, from, next) {
   const authStore = useUserStore();
-  console.log(authStore.authenticated);
   if (authStore.authenticated == true) next(  )
   else next({ name: 'login' })
 }
 function preventAuthPage(to, from, next) {
   const authStore = useUserStore();
-  console.log(authStore.authenticated);
   if (authStore.authenticated == false) next()
   else next({ name: 'dashboard' })
 }

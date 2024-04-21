@@ -1,13 +1,18 @@
 // /store/user.js
 
 import axios from "axios";
+import Toastify from "toastify-js";
 import { defineStore } from "pinia";
 // axios.defaults.headers.common['X-CSRF-TOKEN'] = document.querySelector('meta[name="csrf-token"]').getAttribute('content')
 axios.defaults.withCredentials = true;
 export const useUserStore = defineStore("user", {
   state: () => ({
     user: null,
-    authenticated: false
+    authenticated: false,
+    errors: {
+      email : '',
+      password : ''
+    }
   }),
   persist: true,
   getters: {
@@ -49,6 +54,10 @@ export const useUserStore = defineStore("user", {
     setAuthentication(status){
       this.authenticated = status;
     },
+    clearValidation(status){
+      this.errors.email = '';
+      this.errors.password = '';
+    },
     async doLogin(data){
       await axios.post('http://localhost:2000/login', data, {
         headers: { 'Content-Type': 'application/json' }
@@ -58,7 +67,25 @@ export const useUserStore = defineStore("user", {
         this.router.push('/dashboard');
       })
       .catch((err) => {
-        console.log(err.response.data.message)
+        if(err.response.status == 422){
+          const errs =err.response.data.errors;
+          errs.forEach(element => {
+            if(element.path == 'email'){
+              this.errors.email = element.msg;
+            }
+            if(element.path == 'password'){
+              this.errors.password = element.msg;
+            }
+          });
+        }
+        if(err.response.status == 401){
+          console.log(err.response);
+          Toastify({
+            text: err.response.data.message,
+            className: "error",
+            
+          }).showToast();
+        }
       })
     },
     async logout(){

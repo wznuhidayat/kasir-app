@@ -6,7 +6,11 @@ import Swal from 'sweetalert2'
 export const useCategories = defineStore("categories", {
     state: () => ({
         categories: ref([]),
-        alertRef: reactive({ status: false ,message:'', type : ''})
+        alertRef: reactive({ status: false ,message:'', type : ''}),
+        errors:  {
+          code : '',
+          name : ''
+        }
     }),
     
     actions: {
@@ -23,6 +27,20 @@ export const useCategories = defineStore("categories", {
         const response = await axios.post("http://localhost:2000/categories",{
             code : data.code,
             name: data.name
+        }).catch((err) => {
+          if(err.response.status == 422){
+            console.log(err.response.data.errors);
+            const errs =err.response.data.errors;
+            errs.forEach(element => {
+              if(element.path == 'code'){
+                this.errors.code = element.msg;
+              }
+              if(element.path == 'name'){
+                this.errors.name = element.msg;
+              }
+            });
+          }
+          
         });
         this.setMessage(true, response.data.message, 'success');
         this.router.push('/category');

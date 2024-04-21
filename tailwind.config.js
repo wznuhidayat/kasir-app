@@ -8,7 +8,7 @@ export default {
     extend: {},
   },
   daisyui: {
-    themes: ["bumblebee",],
+    themes: ["bumblebee"],
   },
   server: {
     proxy: {
