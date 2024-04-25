@@ -30,13 +30,14 @@ export const useUserStore = defineStore("user", {
           .get('http://localhost:2000/user')
           .then((res) => {
             this.user = res.data.user;
+            this.setAuthentication(true)
             // user.value = res.data.map((item) => item.name).toString()
           })
           .catch((err) => {
-            console.log(err.response.data.message)
+            this.setAuthentication(false)
           })
       } catch (error) {
-        console.log(error)
+        this.setAuthentication(false)
       }
     },
     async signIn(data) {

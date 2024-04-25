@@ -6,12 +6,14 @@ import { ref, reactive, inject} from 'vue';
 export const useProducts = defineStore("products", {
     state: () => ({
         products: ref([]),
+        filterCategories : ref([]),
         alertRef: reactive({ status: false ,message:'', type : ''})
     }),
     
     actions: {
       async getProducts(){
-        const data = await axios.get('http://localhost:2000/products');
+        console.log(this.filterCategories);
+        const data = await axios.get(`http://localhost:2000/products?category=${JSON.stringify(this.filterCategories)}`);
         this.products = data.data.products;
       },
       async storeProduct(data) {
@@ -30,6 +32,15 @@ export const useProducts = defineStore("products", {
         } catch (error) {
           this.setMessage(true, 'a system error occurred', 'error');
         }
+      },
+      async toggleCategoresFilter(id){
+        const index = this.filterCategories.indexOf(id);
+        if(index !== -1){
+          this.filterCategories.splice(index,1);
+        }else{
+          this.filterCategories.push(id);
+        }
+        this.getProducts()
       },
       async deleteProduct(id){
         Swal.fire({

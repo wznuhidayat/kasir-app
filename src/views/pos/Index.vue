@@ -3,15 +3,11 @@
         <div class="w-2/3 text-natural px-4">
             <div class="card bg-base-100" style="padding: 0.5rem;">
                 <div class="flex px-0">
-                    
-                    <button class="btn btn-active btn-ghost mr-2 px-8" v-for="(category, index) in categoryStore.categories" :key="index">{{ category.name }}</button>
-
+                    <button :class="getClassCategoriesActive(category.id)" v-for="(category, index) in categoryStore.categories" :key="index" @click="productStore.toggleCategoresFilter(category.id)">{{ category.name }}</button>
                 </div>
             </div>
-            <div class="grid grid-cols-4 gap-4 overflow-auto scrollbar-thin h-32 overflow-y-scroll" style="padding-top: 1.5rem;height: 630px;">
+            <div class="grid grid-cols-4 gap-4 overflow-y-auto scrollbar-thin py-5">
                 <CardProduct v-for="(product, index) in productStore.products" :key="index" :product="product"></CardProduct>
-               
-                
             </div>
         </div>
         <div class="w-1/3 h-full absolute top-0 right-0" >
@@ -110,4 +106,12 @@ onMounted(async () => {
     await categoryStore.getCategories();
     await productStore.getProducts();
 })
+function getClassCategoriesActive(id) {
+    if (productStore.filterCategories.indexOf(id) !== -1) {
+        return 'btn btn-active btn-primary mr-2 px-8'
+    }else{
+        return 'btn btn-active btn-gray mr-2 px-8'
+    }
+}
+
 </script>
