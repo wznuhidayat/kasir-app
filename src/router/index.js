@@ -5,8 +5,10 @@ import Home from "@/views/Home.vue";
 import Dashboard from "@/views/Dashboard.vue";
 import Category from "@/views/category/Index.vue";
 import Pos from "@/views/pos/Index.vue";
+import historyOrder from "@/views/historyOrder/Index.vue";
 import AdminLayout from "@/layouts/AdminLayout.vue";
 import AuthLayout from "@/layouts/AuthLayout.vue";
+import Invoice from "@/components/Invoice.vue";
 import { useUserStore } from "../store/auth";
 // import VueRouter from 'vue-router'
 
@@ -50,6 +52,23 @@ const routes = [
     meta: {
       // requireAuth: true,
       layout: AdminLayout,
+    },
+  },
+  {
+    path: "/historyOrder",
+    component: historyOrder,
+    beforeEnter: requireAuth,
+    meta: {
+      // requireAuth: true,
+      layout: AdminLayout,
+    },
+  },
+  {
+    path: "/invoice/:id",
+    component: Invoice,
+    beforeEnter: requireAuth,
+    meta: {
+      layout: AuthLayout,
     },
   },
   {

@@ -12,7 +12,6 @@ export const useProducts = defineStore("products", {
     
     actions: {
       async getProducts(){
-        console.log(this.filterCategories);
         const data = await axios.get(`http://localhost:2000/products?category=${JSON.stringify(this.filterCategories)}`);
         this.products = data.data.products;
       },

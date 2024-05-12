@@ -22,12 +22,12 @@
         </div>
         <div class="flex-none">
 
-            <button  class="btn btn-primary px-8 mr-4"><router-link to="/Pos">POS</router-link> </button>
+            <router-link  class="btn btn-primary px-8 mr-4" to="/Pos">POS</router-link>
             <div class="dropdown dropdown-end">
                 <div tabindex="0" role="button" class="btn btn-ghost btn-circle avatar">
                     <div class="w-10 rounded-full">
                         <img alt="Tailwind CSS Navbar component"
-                            src="https://daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
+                            src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.jpg" />
                     </div>
                 </div>
                 <ul tabindex="0"
@@ -48,7 +48,6 @@
 <script setup>
 import { onMounted } from 'vue';
 import { useUserStore } from "../store/auth";
-import Sidebar from './Sidebar.vue';
 const authStore = useUserStore();
 const props = defineProps(['sidebarOpen'])
 onMounted(async () => { 

@@ -80,7 +80,6 @@ export const useUserStore = defineStore("user", {
           });
         }
         if(err.response.status == 401){
-          console.log(err.response);
           Toastify({
             text: err.response.data.message,
             className: "error",
